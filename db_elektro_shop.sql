@@ -1,6 +1,5 @@
 -- Database Structure for ElektroShop Jakarta
 -- Create database
-CREATE DATABASE elektronik_shop;
 USE elektronik_shop;
 
 -- Users table

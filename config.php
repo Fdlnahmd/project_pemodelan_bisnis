@@ -2,10 +2,9 @@
 // config.php - Database Configuration
 session_start();
 
-// Database configuration
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'mysql');      // nama service di docker-compose
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'secret');     // sesuai MYSQL_ROOT_PASSWORD
 define('DB_NAME', 'elektronik_shop');
 
 // Site configuration
