@@ -7,7 +7,7 @@ if (!isLoggedIn()) {
 }
 
 $currentUser = getCurrentUser();
-if ($currentUser['email'] !== 'admin@gmail.com') {
+if ($currentUser['email'] !== 'admin@elektroshop.com') {
     showAlert('Akses ditolak. Hanya admin yang dapat mengakses halaman ini.', 'error');
     redirect('index.php');
 }
@@ -513,7 +513,8 @@ if ($action === 'edit' && isset($_GET['id'])) {
         <div id="add-product" class="tab-content">
             <div class="card">
                 <h2><?= $edit_product ? 'Edit Produk' : 'Tambah Produk Baru' ?></h2>
-                <form method="POST" enctype="multipart/form-data" action="?action=add">
+               <form method="POST" enctype="multipart/form-data" 
+      action="?action=<?= $edit_product ? 'edit' : 'add' ?>">
                     <?php if ($edit_product): ?>
                         <input type="hidden" name="id" value="<?= $edit_product['id'] ?>">
                     <?php endif; ?>

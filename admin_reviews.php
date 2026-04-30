@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         showAlert('Review berhasil dihapus!', 'success');
     }
 
-    redirect('reviews.php');
+    redirect('admin_reviews.php');
 }
 
 // Get filter parameters
@@ -100,7 +100,7 @@ $stmt = $pdo->query("SELECT
     AVG(CASE WHEN status = 'approved' THEN rating ELSE NULL END) as avg_rating
     FROM reviews");
 $stats = $stmt->fetch();
-$stats['avg_rating'] = round($stats['avg_rating'], 1);
+$stats['avg_rating'] = round((float)($stats['avg_rating'] ?? 0), 1);
 ?>
 
 <!DOCTYPE html>

@@ -126,10 +126,6 @@ $currentUser = getCurrentUser();
             background: rgba(255, 255, 255, 0.3);
         }
 
-        .btn-admin {
-            background: linear-gradient(45deg, #4caf50, #45a049);
-            color: white;
-        }
 
         .btn-admin:hover {
             transform: translateY(-2px);
@@ -373,6 +369,7 @@ $currentUser = getCurrentUser();
             }
         }
     </style>
+    <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "64cbce0f6a4f4f179f95a7a9917112bb"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 
 <body>

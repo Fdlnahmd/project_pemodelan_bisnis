@@ -45,7 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect('reviews.php');
         }
 
-        // Insert review
+// Insert review
+$stmt = $pdo->prepare("SELECT o.id FROM orders o 
+               INNER JOIN order_items oi ON o.id = oi.order_id 
+               WHERE o.user_id = ? AND oi.product_id = ? AND o.status = 'delivered' 
+               LIMIT 1");
+$stmt->execute([$currentUser['id'], $product_id]);
+$order_id = $stmt->fetchColumn();
         try {
             $stmt = $pdo->prepare("INSERT INTO reviews (product_id, user_id, rating, review_text) VALUES (?, ?, ?, ?)");
             if ($stmt->execute([$product_id, $currentUser['id'], $rating, $review_text])) {
