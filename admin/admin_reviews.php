@@ -1,16 +1,15 @@
 <?php
-// reviews.php - Admin Reviews Management
-require_once 'config.php';
+require_once '../includes/config.php';
 
 if (!isLoggedIn()) {
-    redirect('auth.php');
+    redirect('../auth/auth.php');
 }
 
 $currentUser = getCurrentUser();
 
 // Only admin can access this page
 if (!isAdmin($currentUser)) {
-    redirect('index.php');
+    redirect('../index.php');
 }
 
 // Handle review actions
@@ -447,7 +446,8 @@ $stats['avg_rating'] = round((float)($stats['avg_rating'] ?? 0), 1);
             <h1>📝 Kelola Reviews</h1>
             <div>
                 <a href="admin.php" class="btn btn-secondary">Panel Admin</a>
-                <a href="index.php" class="btn btn-secondary">Beranda</a>
+                <a href="admin_laporan.php" class="btn btn-secondary">Laporan</a>
+                <a href="../index.php" class="btn btn-secondary">Beranda</a>
             </div>
         </div>
 

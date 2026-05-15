@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'includes/config.php';
 
 // Get categories for filter
 $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
@@ -390,14 +390,14 @@ $currentUser = getCurrentUser();
                         <a href="orders.php">Pesanan</a>
                         <a href="profile.php">Profile</a>
                         <?php if (isAdmin($currentUser)): ?>
-                            <a href="admin.php" class="btn btn-admin">Panel Admin</a>
+                            <a href="admin/admin.php" class="btn btn-admin">Panel Admin</a>
                         <?php endif; ?>
-                        <a href="auth.php?action=logout" class="btn btn-secondary">Logout</a>
+                        <a href="auth/auth.php?action=logout" class="btn btn-secondary">Logout</a>
                     </div>
                 <?php else: ?>
                     <div class="nav-links">
-                        <a href="auth.php" class="btn btn-secondary">Login</a>
-                        <a href="auth.php?action=register" class="btn btn-primary">Daftar</a>
+                        <a href="auth/auth.php" class="btn btn-secondary">Login</a>
+                        <a href="auth/auth.php?action=register" class="btn btn-primary">Daftar</a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -502,7 +502,7 @@ $currentUser = getCurrentUser();
                                 </button>
                             <?php endif; ?>
                         <?php else: ?>
-                            <a href="auth.php" class="btn btn-secondary" style="width: 100%; text-align: center;">
+                            <a href="auth/auth.php" class="btn btn-secondary" style="width: 100%; text-align: center;">
                                 Login untuk Membeli
                             </a>
                         <?php endif; ?>

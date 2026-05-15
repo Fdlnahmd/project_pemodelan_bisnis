@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'includes/config.php';
 
 // Check if user is logged in
 if (!isLoggedIn()) {
@@ -8,14 +8,14 @@ if (!isLoggedIn()) {
 }
 
 $currentUser = getCurrentUser();
-$action = $_GET['action'] ?? 'list';
+$action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add') {
         $product_id = intval($_POST['product_id']);
         $rating = intval($_POST['rating']);
-        $review_text = sanitize($_POST['review_text']);
+        $comment = sanitize($_POST['review_text']);
 
         // Validasi input
         if ($rating < 1 || $rating > 5) {
@@ -53,8 +53,8 @@ $stmt = $pdo->prepare("SELECT o.id FROM orders o
 $stmt->execute([$currentUser['id'], $product_id]);
 $order_id = $stmt->fetchColumn();
         try {
-            $stmt = $pdo->prepare("INSERT INTO reviews (product_id, user_id, rating, review_text) VALUES (?, ?, ?, ?)");
-            if ($stmt->execute([$product_id, $currentUser['id'], $rating, $review_text])) {
+            $stmt = $pdo->prepare("INSERT INTO reviews (product_id, user_id, order_id, rating, comment) VALUES (?, ?, ?, ?, ?)");
+            if ($stmt->execute([$product_id, $currentUser['id'], $order_id, $rating, $comment])) {
                 showAlert('Review berhasil ditambahkan! Menunggu persetujuan admin.', 'success');
             } else {
                 showAlert('Gagal menambahkan review', 'error');
@@ -68,7 +68,7 @@ $order_id = $stmt->fetchColumn();
     } elseif ($action === 'edit') {
         $review_id = intval($_POST['review_id']);
         $rating = intval($_POST['rating']);
-        $review_text = sanitize($_POST['review_text']);
+        $comment = sanitize($_POST['review_text']);
 
         // Validasi input
         if ($rating < 1 || $rating > 5) {
@@ -78,8 +78,8 @@ $order_id = $stmt->fetchColumn();
 
         // Update review (hanya milik user yang login)
         try {
-            $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, review_text = ?, status = 'pending' WHERE id = ? AND user_id = ?");
-            if ($stmt->execute([$rating, $review_text, $review_id, $currentUser['id']])) {
+            $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, comment = ?, status = 'pending' WHERE id = ? AND user_id = ?");
+            if ($stmt->execute([$rating, $comment, $review_id, $currentUser['id']])) {
                 showAlert('Review berhasil diperbarui! Menunggu persetujuan admin.', 'success');
             } else {
                 showAlert('Gagal memperbarui review', 'error');
@@ -504,9 +504,9 @@ if ($action === 'edit' && isset($_GET['id'])) {
                                 </div>
                             </div>
 
-                            <?php if ($review['review_text']): ?>
+                            <?php if ($review['comment']): ?>
                                 <div style="margin-bottom: 15px;">
-                                    <?= nl2br(htmlspecialchars($review['review_text'])) ?>
+                                    <?= nl2br(htmlspecialchars($review['comment'])) ?>
                                 </div>
                             <?php endif; ?>
 
@@ -560,7 +560,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
                         <div class="form-group">
                             <label for="review_text">Review</label>
                             <textarea id="review_text" name="review_text" rows="4"
-                                placeholder="Tulis review Anda tentang produk ini..."><?= htmlspecialchars($editReview['review_text']) ?></textarea>
+                                placeholder="Tulis review Anda tentang produk ini..."><?= htmlspecialchars($editReview['comment']) ?></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-success" style="width: 100%;">

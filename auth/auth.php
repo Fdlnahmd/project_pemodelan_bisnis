@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once '../includes/config.php';
 
 $action = $_GET['action'] ?? 'login';
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 showAlert('Login berhasil!', 'success');
-                redirect('index.php');
+                redirect('../index.php');
             } else {
                 showAlert('Email atau password salah', 'error');
             }
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($stmt->execute([$name, $email, $hashedPassword, $phone, $address])) {
                     $_SESSION['user_id'] = $pdo->lastInsertId();
                     showAlert('Pendaftaran berhasil!', 'success');
-                    redirect('index.php');
+                    redirect('../index.php');
                 } else {
                     showAlert('Terjadi kesalahan saat mendaftar', 'error');
                 }
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Handle logout
 if ($action === 'logout') {
     session_destroy();
-    redirect('index.php');
+    redirect('../index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -314,7 +314,7 @@ if ($action === 'logout') {
         <?php endif; ?>
 
         <div class="back-to-home">
-            <a href="index.php">← Kembali ke Beranda</a>
+            <a href="../index.php">← Kembali ke Beranda</a>
         </div>
     </div>
 </body>

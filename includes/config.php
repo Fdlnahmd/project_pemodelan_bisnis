@@ -3,17 +3,21 @@
 session_start();
 date_default_timezone_set('Asia/Jakarta'); 
 
-define('DB_HOST', 'mysql');      // nama service di docker-compose
-define('DB_USER', 'root');
-define('DB_PASS', 'secret');     // sesuai MYSQL_ROOT_PASSWORD
-define('DB_NAME', 'elektronik_shop');
+// Load Environment Variables
+require_once __DIR__ . '/../env_loader.php';
+
+define('DB_HOST', getenv('DB_HOST') ?: 'mysql');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: 'secret');
+define('DB_NAME', getenv('DB_NAME') ?: 'elektronik_shop');
 
 // Site configuration
 define('SITE_NAME', 'ElektroShop Jakarta');
-define('SITE_URL', 'http://localhost/elektronik-shop');
+define('SITE_URL', (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . ($_SERVER['HTTP_HOST'] ?? 'localhost'));
+define('ROOT_PATH', dirname(__DIR__)); // Path absolut ke root folder
 
 // Admin configuration
-define('ADMIN_EMAILS', ['admin@elektroshop.com', 'admin@gmail.com']);
+define('ADMIN_EMAILS', ['admin@electroshop.com', 'admin@gmail.com']);
 
 // Create database connection
 try {
@@ -54,7 +58,8 @@ function isAdmin($user = null)
 
     if (!$user) return false;
 
-    return in_array($user['email'], ADMIN_EMAILS);
+    // Cek berdasarkan role di database (lebih fleksibel) atau email admin utama
+    return (isset($user['role']) && $user['role'] === 'admin') || in_array($user['email'], ADMIN_EMAILS);
 }
 
 function requireAdmin()
@@ -128,7 +133,7 @@ function uploadProductImage($file)
     }
 
     // Create upload directory if it doesn't exist
-    $upload_dir = 'uploads/products/';
+    $upload_dir = ROOT_PATH . '/uploads/products/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }

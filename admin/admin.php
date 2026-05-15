@@ -1,15 +1,15 @@
 <?php
-require_once 'config.php';
+require_once '../includes/config.php';
 
 // Check if user is admin (simple check - in production, use proper role-based auth)
 if (!isLoggedIn()) {
-    redirect('auth.php');
+    redirect('../auth/auth.php');
 }
 
 $currentUser = getCurrentUser();
-if ($currentUser['email'] !== 'admin@elektroshop.com') {
+if (!isAdmin($currentUser)) {
     showAlert('Akses ditolak. Hanya admin yang dapat mengakses halaman ini.', 'error');
-    redirect('index.php');
+    redirect('../index.php');
 }
 
 $action = $_POST['action'] ?? $_GET['action'] ?? 'list';
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file_ext = strtolower($file_info['extension']);
 
             if (in_array($file_ext, $allowed_types)) {
-                $upload_dir = 'uploads/products/';
+                $upload_dir = '../uploads/products/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0755, true);
                 }
@@ -446,9 +446,10 @@ if ($action === 'edit' && isset($_GET['id'])) {
         <div class="header">
             <h1>Admin Panel - <?= SITE_NAME ?></h1>
             <div>
-                <a href="index.php" class="btn btn-secondary">Kembali ke Toko</a>
+                <a href="../index.php" class="btn btn-secondary">Kembali ke Toko</a>
                 <a href="admin_reviews.php" class="btn btn-secondary">Reviews</a>
-                <a href="auth.php?action=logout" class="btn btn-danger">Logout</a>
+                <a href="admin_laporan.php" class="btn btn-secondary">Laporan</a>
+                <a href="../auth/auth.php?action=logout" class="btn btn-danger">Logout</a>
             </div>
         </div>
 

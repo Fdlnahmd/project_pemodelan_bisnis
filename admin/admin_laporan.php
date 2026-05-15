@@ -1,14 +1,14 @@
 <?php
-require_once 'config.php';
+require_once '../includes/config.php';
 
 if (!isLoggedIn()) {
-    redirect('auth.php');
+    redirect('../auth/auth.php');
 }
 
 $currentUser = getCurrentUser();
 if (!isAdmin($currentUser)) {
     showAlert('Akses ditolak. Hanya admin yang dapat mengakses halaman ini.', 'error');
-    redirect('index.php');
+    redirect('../index.php');
 }
 
 // ── Filter periode ────────────────────────────────────────────────

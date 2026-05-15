@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'includes/config.php';
 
 if (!isLoggedIn()) {
     redirect('auth.php');
@@ -571,7 +571,7 @@ foreach ($orders as $order) {
                 <a href="reviews.php" class="btn btn-secondary">Reviews</a>
                 <a href="cart.php" class="btn btn-secondary">Keranjang</a>
                 <?php if (isAdmin($currentUser)): ?>
-                    <a href="admin.php" class="btn btn-primary">Panel Admin</a>
+                    <a href="admin/admin.php" class="btn btn-primary">Panel Admin</a>
                 <?php endif; ?>
             </div>
         </div>
